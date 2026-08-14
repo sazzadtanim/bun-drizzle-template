@@ -1,0 +1,4 @@
+node_modules/
+.env
+src/lib/backend/drizzle/backups/
+dist/

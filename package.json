@@ -1,0 +1,39 @@
+{
+	"name": "replace-me-drizzle-app",
+	"private": true,
+	"type": "module",
+	"module": "./server.ts",
+	"scripts": {
+		"dev": "bun --hot server.ts",
+		"gen": "cd src/lib/backend/drizzle/src/scripts && bun run generate-table-barrel.ts && bun run generate-relations.ts && bun run generate-zod-schemas.ts && bun run generate-schemas-barrel.ts && cd ../../.. && bun run gen:format",
+		"gen:format": "bunx --bun @biomejs/biome check --write src/lib/backend/drizzle/src/schema.ts src/lib/backend/drizzle/src/relations.ts src/lib/backend/drizzle/src/schemas.ts src/lib/backend/drizzle/src/zod-schemas",
+		"gen:check": "bun run gen && git diff --exit-code -- src/lib/backend/drizzle/src/schema.ts src/lib/backend/drizzle/src/relations.ts src/lib/backend/drizzle/src/schemas.ts src/lib/backend/drizzle/src/zod-schemas",
+		"db:generate": "bunx drizzle-kit generate --config=src/lib/backend/drizzle/drizzle.config.ts",
+		"db:migrate": "bunx drizzle-kit migrate --config=src/lib/backend/drizzle/drizzle.config.ts",
+		"db:push": "bunx drizzle-kit push --config=src/lib/backend/drizzle/drizzle.config.ts",
+		"db:seed": "bun run src/lib/backend/drizzle/src/scripts/seed.ts",
+		"db:backup": "bun run src/lib/backend/drizzle/src/scripts/backup.ts",
+		"db:restore": "bun run src/lib/backend/drizzle/src/scripts/restore.ts",
+		"db:studio": "bunx drizzle-kit studio --config=src/lib/backend/drizzle/drizzle.config.ts",
+		"check": "bunx tsc --noEmit && bunx --bun @biomejs/biome check --write --unsafe",
+		"check-types": "bunx tsc --noEmit",
+		"test": "bun test src/lib/backend/drizzle/src/__tests__",
+		"init": "bun run init.ts"
+	},
+	"dependencies": {
+		"@better-auth/utils": "^0.4.2",
+		"@logtape/drizzle-orm": "^2.3.0",
+		"@logtape/logtape": "^2.3.0",
+		"drizzle-orm": "^1.0.0-rc.4",
+		"pg": "^8.22.0",
+		"zod": "^4.4.3"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.6",
+		"@faker-js/faker": "^10.5.0",
+		"@types/bun": "latest",
+		"@types/pg": "^8.20.0",
+		"drizzle-kit": "^1.0.0-rc.4",
+		"typescript": "^5"
+	}
+}
