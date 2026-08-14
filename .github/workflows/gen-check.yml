@@ -1,0 +1,19 @@
+name: gen-check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  gen-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      # Staleness guard (#99): regenerated output must be byte-stable.
+      # Fails if anyone hand-edits a generated file or forgets to run gen.
+      - run: bun run gen:check
+      - run: bun run check
+      - run: bun run test
